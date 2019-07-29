@@ -1,11 +1,9 @@
 import sys
-import barcode
-
-version = "0.0.1"
-
+import barcode  # MIT License
+import cairosvg  # LGPLv3
+from PIL import Image, ImageDraw, ImageFont  # https://github.com/python-pillow/Pillow/blob/master/LICENSE
 
 def main(args):
-    print("barter {}".format(version))
     print("available:{}".format(" \n".join(barcode.PROVIDED_BARCODES)))
     print(" ".join(args))
     text = args[1]
@@ -24,6 +22,8 @@ def main(args):
     svgtopng(outfile+".svg")
     # todo: png/pdf with bcode next to human readable output for labels of size n*m )
     # todo: read in csv for multi outputs
+    # todo: size
+
     pngstuff(message=text)
 
 
