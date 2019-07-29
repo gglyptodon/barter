@@ -1,71 +1,39 @@
+# -*- coding: utf-8 -*-
+"""
+barter.py
+=========
+barter.py generates barcode labels from csv files
+"""
+
 import sys
+import os
+import tempfile
+import argparse
 import barcode  # MIT License
 import cairosvg  # LGPLv3
 from PIL import Image, ImageDraw, ImageFont  # https://github.com/python-pillow/Pillow/blob/master/LICENSE
+from barter.formats import SUPPORTED_BARCODES
+from barter.stuff import svgtopng, pngstuff, csvfun
+
 
 def main(args):
-    print("available:{}".format(" \n".join(barcode.PROVIDED_BARCODES)))
-    print(" ".join(args))
-    text = args[1]
-    fmt = args[2]
-    outfile = args[3]
-    if not text:
-        text = "test"
-    if not fmt:
-        fmt = "code128"
-    if not outfile:
-        outfile = "out.svg"
-    cls = barcode.get_barcode_class(fmt)
-    bcode = cls(text)
-    print(bcode)
-    bcode.save(outfile)
-    svgtopng(outfile+".svg")
-    # todo: png/pdf with bcode next to human readable output for labels of size n*m )
-    # todo: read in csv for multi outputs
-    # todo: size
-
-    pngstuff(message=text)
-
-
-#todo height width not working
-def svgtopng(insvg, out="out.png", width=10, height=20):
-    from cairosvg.surface import PNGSurface
-    with open(insvg, 'rb') as svg_file:
-        PNGSurface.convert(
-            bytestring=svg_file.read(),
-            width=width,
-            height=height,
-            write_to=open(out, 'wb')
-        )
-
-def pngstuff(bcd="out.png", message="Happy Birthday!",name = 'bla' ):
-    from PIL import Image, ImageDraw, ImageFont
-    #image = Image.open('background.png')
-    image = Image.new('RGB', (200, 100),color=(255,255,255))
-    bcdim=Image.open(bcd)
-    image.paste(bcdim, (0,0))
-
-    draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype('Roboto-Bold.ttf', size=14)
-    (x, y) = (120, 20)
-    color = 'rgb(0, 0, 0)' #
-    # draw the message on the background
-    draw.text((x, y), message, fill=color, font=font)
-    (x, y) = (150, 150)
-    color = 'rgb(255, 255, 255)' # white color
-    draw.text((x, y), name, fill=color, font=font)
-
-
-    # save the edited image
-
-    image.save('res.png')
-
-
-
-def helpfn():
-    print("text format output")
+    csvinfile = args.infile
+    column = args.column
+    fmt = args.format
+    outdir= args.outdir
+    if not os.path.isdir(outdir):
+        sys.exit(1)
+    csvfun(in_csv=csvinfile, column=column, fmt=fmt,outdir=outdir)
 
 
 
 if __name__ == "__main__":
-    main(sys.argv)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-f", "--format", help="barcode format", choices=SUPPORTED_BARCODES,
+                        default="code128")
+    parser.add_argument("infile", help="input csv file")
+    parser.add_argument("-c", "--column", help="column for which labels should be generated",
+                        type=int, default=0)
+    parser.add_argument("outdir", help="output directory name")
+    args = parser.parse_args()
+    main(args)

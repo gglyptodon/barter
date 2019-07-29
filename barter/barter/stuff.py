@@ -3,7 +3,8 @@ import tempfile
 import barcode
 from .formats import SUFFIX_PNG, SUFFIX_SVG
 
-def write_label(text, fmt, outfile):
+
+def write_label(text, fmt, outfile): # todo output dir for bulk output
     barcode_class = barcode.get_barcode_class(fmt)
     gen_barcode = barcode_class(text)
 
@@ -17,7 +18,7 @@ def write_label(text, fmt, outfile):
         # todo: size
 
         pngstuff(bcd=tmpout+SUFFIX_PNG, message=text, out=outfile)
-    pass
+
 
 
 #todo height width not working
@@ -53,6 +54,18 @@ def pngstuff(bcd="out.png", message="Happy Birthday!",name = 'bla', out='res.png
     # save the edited image
 
     image.save(out)
+
+
+def csvfun(in_csv, column, fmt, outdir):
+    import csv
+    outfile_pref = os.path.join(outdir,"tmp_")
+    with open(in_csv) as csvfile:
+        reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+        for i, row in enumerate(reader):
+            #print(', '.join(row))
+            #print(row[column])
+            text = row[column]
+            write_label(text=text, fmt=fmt, outfile=outfile_pref+str(i)+".png")
 
 
 
