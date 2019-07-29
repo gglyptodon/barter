@@ -1,0 +1,4 @@
+SUPPORTED_BARCODES = ["code128"]
+
+SUFFIX_PNG = ".png"
+SUFFIX_SVG = ".svg"
