@@ -1,4 +1,10 @@
-SUPPORTED_BARCODES = ["code128"]
+import treepoem.data
 
+
+def get_supported_by_treepoem():
+    return sorted(treepoem.data.barcode_types.keys())
+
+
+SUPPORTED_BARCODES = get_supported_by_treepoem()
 SUFFIX_PNG = ".png"
 SUFFIX_SVG = ".svg"
