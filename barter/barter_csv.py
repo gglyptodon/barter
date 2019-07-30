@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-barter.py
+barter_csv.py
 =========
-barter.py generates barcode labels from csv files
+barter_csv.py generates barcode labels from csv files
 """
 
 import sys
