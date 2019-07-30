@@ -2,23 +2,50 @@ import os
 import tempfile
 import barcode
 from .formats import SUFFIX_PNG, SUFFIX_SVG
+import svglib
 
 
-def write_label(text, fmt, outfile): # todo output dir for bulk output
+def mm_to_inch(mm):
+    print(mm/25.4)
+    return mm/25.4/2  # yeah, no idea...
+
+
+def write_label_tp(barcode_type='qrcode', data='barcode payload', outfile='out.png', width_mm=20, height_mm=20):
+    import treepoem
+    image = treepoem.generate_barcode(barcode_type=barcode_type, data=data, options={"width": mm_to_inch(width_mm), "height": mm_to_inch(height_mm)})
+    image.convert('1').save(outfile+"mm"+".pdf")
+    image = treepoem.generate_barcode(barcode_type=barcode_type, data=data, options={"width": mm_to_inch(width_mm), "height": mm_to_inch(height_mm)})
+    image.convert('1').save(outfile)
+
+
+def writelabel2(barcode, code, out, opts, text):
+    writersvg = barcode.SVGWriter()
+    writerimg = barcode.ImageWriter()
+    name = barcode.generate(barcode, code, writersvg, out, opts, text)
+    print('New barcode saved as {0}.'.format(name))
+    name = barcode.generate(barcode, code, writerimg, out, opts, text)
+    print('New barcode saved as {0}.'.format(name))
+
+
+def write_label(text, fmt, outfile, width=200, height=100):
     barcode_class = barcode.get_barcode_class(fmt)
     gen_barcode = barcode_class(text)
 
     with tempfile.TemporaryDirectory() as tmpdirname:
         tmpout = os.path.join(tmpdirname, "tmp.out")
-        print('created temporary directory', tmpdirname, tmpout)
         gen_barcode.save(tmpout)
-        svgtopng(tmpout+SUFFIX_SVG, out=tmpout+SUFFIX_PNG)
+        svgtopng2(tmpout+SUFFIX_SVG, out=tmpout+SUFFIX_PNG)
         # todo: png/pdf with bcode next to human readable output for labels of size n*m )
-        # todo: read in csv for multi outputs
         # todo: size
 
         pngstuff(bcd=tmpout+SUFFIX_PNG, message=text, out=outfile)
 
+
+def svgtopng2(insvg, out="out.png", width=10, height=20):
+    from svglib.svglib import svg2rlg
+    from reportlab.graphics import renderPDF, renderPM
+    drawing = svg2rlg(insvg)
+    renderPM.drawToFile(drawing, out, fmt="PNG")
 
 
 #todo height width not working
@@ -66,9 +93,3 @@ def csvfun(in_csv, column, fmt, outdir):
             #print(row[column])
             text = row[column]
             write_label(text=text, fmt=fmt, outfile=outfile_pref+str(i)+".png")
-
-
-
-def helpfn():
-    print("text format output")
-
