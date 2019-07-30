@@ -10,11 +10,18 @@ def mm_to_inch(mm):
     return mm/25.4/2  # yeah, no idea...
 
 
-def write_label_tp(barcode_type='qrcode', data='barcode payload', outfile='out.png', width_mm=20, height_mm=20):
+def write_label_tp(barcode_type='qrcode', data='barcode payload', outfile='out.png', width_mm=20, height_mm=20, include_text=False):
     import treepoem
-    image = treepoem.generate_barcode(barcode_type=barcode_type, data=data, options={"width": mm_to_inch(width_mm), "height": mm_to_inch(height_mm)})
-    image.convert('1').save(outfile+"mm"+".pdf")
-    image = treepoem.generate_barcode(barcode_type=barcode_type, data=data, options={"width": mm_to_inch(width_mm), "height": mm_to_inch(height_mm)})
+    #image = treepoem.generate_barcode(barcode_type=barcode_type, data=data, options={"width": mm_to_inch(width_mm), "height": mm_to_inch(height_mm)})
+    #image.convert('1').save(outfile+"mm"+".pdf")
+
+    width_mod = mm_to_inch(width_mm)
+    height_mod = mm_to_inch(height_mm)
+    if include_text:  # idk...
+        opts = {'_': '(includetext)', 'width': width_mod, 'height': height_mod}
+    else:
+        opts = {'width': width_mod, 'height': height_mod}
+    image = treepoem.generate_barcode(barcode_type=barcode_type, data=data, options=opts)
     image.convert('1').save(outfile)
 
 
