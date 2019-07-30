@@ -6,5 +6,3 @@ def get_supported_by_treepoem():
 
 
 SUPPORTED_BARCODES = get_supported_by_treepoem()
-SUFFIX_PNG = ".png"
-SUFFIX_SVG = ".svg"
