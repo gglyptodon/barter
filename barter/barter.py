@@ -7,13 +7,9 @@ barter.py generates barcode labels from csv files
 
 import sys
 import os
-import tempfile
 import argparse
-import barcode  # MIT License
-import cairosvg  # LGPLv3
-from PIL import Image, ImageDraw, ImageFont  # https://github.com/python-pillow/Pillow/blob/master/LICENSE
 from barter.formats import SUPPORTED_BARCODES
-from barter.stuff import svgtopng, pngstuff, csvfun
+from barter.stuff import csvfun_tp
 
 
 def main(args):
@@ -21,10 +17,18 @@ def main(args):
     column = args.column
     fmt = args.format
     outdir= args.outdir
+    include_text = args.include_text
+    width = args.width
+    height = args.height
     if not os.path.isdir(outdir):
         sys.exit(1)
-    csvfun(in_csv=csvinfile, column=column, fmt=fmt,outdir=outdir)
-
+    csvfun_tp(in_csv=csvinfile,
+              column=column,
+              fmt=fmt,
+              outdir=outdir,
+              include_text=include_text,
+              height=height,
+              width=width)
 
 
 if __name__ == "__main__":
@@ -35,5 +39,8 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--column", help="column for which labels should be generated",
                         type=int, default=0)
     parser.add_argument("outdir", help="output directory name")
+    parser.add_argument("-H", "--height", help="height in mm", type=int, default=20)
+    parser.add_argument("-W", "--width", help="width in mm", type=int, default=40)
+    parser.add_argument("-I", "--include_text", help="add human-readable text", dest='include_text', default=False, action='store_true')
     args = parser.parse_args()
     main(args)
