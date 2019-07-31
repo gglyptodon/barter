@@ -3,7 +3,6 @@ import treepoem
 
 
 def mm_to_inch(mm):
-    # print(mm/25.4)
     return mm/25.4/2  # yeah, no idea...
 
 
