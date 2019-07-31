@@ -6,3 +6,4 @@ def get_supported_by_treepoem():
 
 
 SUPPORTED_BARCODES = get_supported_by_treepoem()
+SUPPORTED_IMG_FORMATS = ["png"]

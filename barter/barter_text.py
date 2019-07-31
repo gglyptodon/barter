@@ -6,7 +6,7 @@ barter_text.py generates barcode labels
 """
 
 import argparse
-from barter.formats import SUPPORTED_BARCODES
+from barter.formats import SUPPORTED_BARCODES, SUPPORTED_IMG_FORMATS
 from barter.stuff import write_label_tp, add_sidetext
 
 
@@ -20,12 +20,20 @@ def main(args):
     sidetext = args.side_text
     margin = args.side_text_margin
 
-    write_label_tp(data=text, outfile=outfile, barcode_type=fmt, width_mm=width,
-                   height_mm=height, include_text=include_text)
-    if sidetext:
-        # todo output to tempfile instead of write_label_tp to outfile
+    if not outfile.split(".")[-1] in SUPPORTED_IMG_FORMATS:
+        print("{} did not have a valid file extension, saving to {}".format(outfile, outfile+".png"))
+        outfile += ".png"
 
-        add_sidetext(img_to_add=outfile, outfile=outfile+"side.png", sidetext=sidetext, margin=margin)
+    if not sidetext:
+        write_label_tp(data=text, outfile=outfile, barcode_type=fmt, width_mm=width,
+                   height_mm=height, include_text=include_text)
+    else:
+        import tempfile
+        f = tempfile.NamedTemporaryFile(delete=True)
+        fpng = f.name+".png"
+        write_label_tp(data=text, outfile=fpng, barcode_type=fmt, width_mm=width,
+                       height_mm=height, include_text=include_text)
+        add_sidetext(img_to_add=fpng, outfile=outfile, sidetext=sidetext, margin=margin)
 
 
 if __name__ == "__main__":
