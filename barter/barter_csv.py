@@ -22,6 +22,8 @@ def main(args):
     height = args.height
     side_text_column = args.side_text_column
     side_text_margin = args.side_text_margin
+    fontname = args.font
+    fontsize = args.fontsize
 
     if not os.path.isdir(outdir):
         sys.exit(1)
@@ -33,8 +35,10 @@ def main(args):
             outdir=outdir,
             include_text=include_text,
             height=height,
-            width=width)
+            width=width,
+        )
     else:
+        print(fontname)
         csvfun_tp_sidetext(
             in_csv=csvinfile,
             column=column,
@@ -43,8 +47,11 @@ def main(args):
             include_text=include_text,
             height=height,
             width=width,
-            side_text_column = side_text_column,
-            side_text_margin = side_text_margin)
+            side_text_column=side_text_column,
+            side_text_margin=side_text_margin,
+            fontname=fontname,
+            fontsize=fontsize
+        )
 
 
 if __name__ == "__main__":
@@ -63,5 +70,11 @@ if __name__ == "__main__":
     parser.add_argument("-M", "--side_text_margin", type=int,
                         help="spacing between barcode and text on the side (in px)",
                         default=5)
+    parser.add_argument("-F", "--font", type=str,
+                        help="font",
+                        default="FreeMono.otf")
+    parser.add_argument("--fontsize", type=int,
+                        help="font size",
+                        default=16)
     args = parser.parse_args()
     main(args)

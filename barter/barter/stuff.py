@@ -44,7 +44,7 @@ def csvfun_tp(in_csv, column, fmt, outdir, width=20, height=20, include_text=Fal
 def csvfun_tp_sidetext(in_csv, column, fmt, outdir, width=20, height=20,
                        include_text=False,
                        side_text_column=0,
-                       side_text_margin=1):
+                       side_text_margin=1, fontname='', fontsize=16):
     import csv
     import tempfile
 
@@ -63,30 +63,22 @@ def csvfun_tp_sidetext(in_csv, column, fmt, outdir, width=20, height=20,
                            width_mm=width,
                            height_mm=height,
                            include_text=include_text)
-            add_sidetext(img_to_add=fpng, outfile=outfile_pref+str(i)+".png", sidetext=sidetext, margin=margin)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            add_sidetext(img_to_add=fpng,
+                         outfile=outfile_pref+str(i)+".png",
+                         sidetext=sidetext,
+                         margin=margin,
+                         fontname=fontname,
+                         fontsize=fontsize
+                         )
 
 
 def add_sidetext(sidetext="test0123456789",
                  img_to_add=None,
                  fontsize=20,
                  outfile=None,
-                 margin=10):
+                 margin=10,
+                 fontname='FreeMono.otf',
+                 ):
 
     from PIL import Image, ImageDraw, ImageFont
     if not outfile:
@@ -99,7 +91,14 @@ def add_sidetext(sidetext="test0123456789",
     old_width, old_height = old_box[2], old_box[3]
 
     # get dimensions for text
-    font = ImageFont.truetype("dc_o.ttf", fontsize)
+    #fontname = "dc_o.ttf",
+    #font = ImageFont.load_default()
+    try:
+        font = ImageFont.truetype(fontname, fontsize)
+    except Exception: # todo
+        print("font {} not found".format(fontname))
+        font = ImageFont.load_default()
+
     font_w, font_h = font.getsize(sidetext)
 
     # create new image with dim old_image_width + textwidth (+margin) x old_image_height
