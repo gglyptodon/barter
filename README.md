@@ -70,6 +70,6 @@ barter_text.py "https://github.com/gglyptodon/barter" ~/Desktop/barter_url.png  
 
 
 ```
-barter_text.py https://github.com/gglyptodon/barter  ~/Desktop/url_barcode.png  -W 30 -H 30 -F Ubuntu-R.ttf --fontsize 30  -f qrcode
+barter_text.py https://github.com/gglyptodon/barter  ~/Desktop/url_barcode.png  -W 30 -H 30 -f qrcode
 ```
 ![](https://raw.githubusercontent.com/gglyptodon/barter/master/barter/example/pics/url_barcode.png)
