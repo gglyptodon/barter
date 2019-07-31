@@ -1,6 +1,7 @@
 import os
 import treepoem
 
+
 def mm_to_inch(mm):
     # print(mm/25.4)
     return mm/25.4/2  # yeah, no idea...
@@ -38,6 +39,47 @@ def csvfun_tp(in_csv, column, fmt, outdir, width=20, height=20, include_text=Fal
                            width_mm=width,
                            height_mm=height,
                            include_text=include_text)
+
+
+def csvfun_tp_sidetext(in_csv, column, fmt, outdir, width=20, height=20,
+                       include_text=False,
+                       side_text_column=0,
+                       side_text_margin=1):
+    import csv
+    import tempfile
+
+    outfile_pref = os.path.join(outdir, "tmp_")
+    with open(in_csv) as csvfile:
+        reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+        for i, row in enumerate(reader):
+            f = tempfile.NamedTemporaryFile(delete=True)
+            fpng = f.name+".png"
+            text = row[column]
+            sidetext = row[side_text_column]
+            margin = side_text_margin
+            write_label_tp(data=text,
+                           outfile=fpng, # outfile_pref+str(i)+".png",
+                           barcode_type=fmt,
+                           width_mm=width,
+                           height_mm=height,
+                           include_text=include_text)
+            add_sidetext(img_to_add=fpng, outfile=outfile_pref+str(i)+".png", sidetext=sidetext, margin=margin)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def add_sidetext(sidetext="test0123456789",

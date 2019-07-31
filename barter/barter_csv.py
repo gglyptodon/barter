@@ -26,24 +26,25 @@ def main(args):
     if not os.path.isdir(outdir):
         sys.exit(1)
     if side_text_column is None:
-        csvfun_tp(in_csv=csvinfile,
-                column=column,
-                fmt=fmt,
-                outdir=outdir,
-                include_text=include_text,
-                height=height,
-                width=width)
+        csvfun_tp(
+            in_csv=csvinfile,
+            column=column,
+            fmt=fmt,
+            outdir=outdir,
+            include_text=include_text,
+            height=height,
+            width=width)
     else:
         csvfun_tp_sidetext(
             in_csv=csvinfile,
-                column=column,
-                fmt=fmt,
-                outdir=outdir,
-                include_text=include_text,
-                height=height,
-                width=width,
-                side_text_column = side_text_column,
-                side_text_margin = side_text_margin)
+            column=column,
+            fmt=fmt,
+            outdir=outdir,
+            include_text=include_text,
+            height=height,
+            width=width,
+            side_text_column = side_text_column,
+            side_text_margin = side_text_margin)
 
 
 if __name__ == "__main__":
