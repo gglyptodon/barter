@@ -64,7 +64,7 @@ optional arguments:
 ## Example output
 
 ```
-barter_text.py "https://github.com/gglyptodon/barter"  /home/ggly/Desktop/barter_url.png  -W 30 -H 30 -F Ubuntu-R.ttf --fontsize 30  -f qrcode -S https://github.com/gglyptodon/barter -M0
+barter_text.py "https://github.com/gglyptodon/barter" ~/Desktop/barter_url.png  -W 30 -H 30 -F Ubuntu-R.ttf --fontsize 30  -f qrcode -S https://github.com/gglyptodon/barter -M0
 ```
 ![](https://raw.githubusercontent.com/gglyptodon/barter/master/barter/example/pics/url.png)
 
