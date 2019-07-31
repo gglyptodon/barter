@@ -40,26 +40,50 @@ def csvfun_tp(in_csv, column, fmt, outdir, width=20, height=20, include_text=Fal
                            include_text=include_text)
 
 
-def add_sidetext(bc_width):
+def add_sidetext(sidetext="test0123456789",
+                 img_to_add=None,
+                 fontsize=20,
+                 outfile=None,
+                 margin=10):
+
     from PIL import Image, ImageDraw, ImageFont
-    img = Image.new('RGB', (200, 100))
-    d = ImageDraw.Draw(img)
-    txt = 'hi'
-    W, H = (200, 200) # image size
-    background = (0, 164, 201)
-    fontsize = 65
+    if not outfile:
+        raise Exception("Need output file name")
+
+    # get dimensions from old image
+    old_img = Image.open(img_to_add)  # barcode
+    old_box = old_img.getbbox()
+    print(old_box)
+    old_width, old_height = old_box[2], old_box[3]
+
+    # get dimensions for text
     font = ImageFont.truetype("dc_o.ttf", fontsize)
-    image = Image.new('RGBA', (W, H), background)
+    font_w, font_h = font.getsize(sidetext)
+
+    # create new image with dim old_image_width + textwidth (+margin) x old_image_height
+    W, H = (old_width+font_w+margin, old_height)  # new image size
+    bgcol = (255, 255, 255)
+    image = Image.new('RGBA', (W, H), bgcol)
     draw = ImageDraw.Draw(image)
+    # add text to right
+    draw.text((old_width+margin, (H-font_h)/2), sidetext, fill='black', font=font)
+    # paste old image
+    image.paste(old_img, box=old_box)
+    # save image
+    image.save(outfile)
+    #mimage.paste(simage, box)
+    # todo
+    # get dimensions from old image
+    # get dimensions for text
+    # create new image with dim old_image_width + textwidth (+margin) x old_image_height
+    # cp old image to left, add text
+    # save image
 
-    # w, h = draw.textsize(txt) # not that accurate in getting font size
-    w, h = font.getsize(txt)
 
-    draw.text((mm_to_pixel(bc_width), (H-h)/2), txt, fill='white', font=font)
     # draw.text((10, 0), txt, (0,0,0), font=font)
     # img_resized = image.resize((188,45), Image.ANTIALIAS)
 
-    save_location = os.getcwd()
+    #save_location = os.getcwd()
 
     # img_resized.save(save_location + '/sample.jpg')
-    image.save(save_location + '/sample.png')
+
