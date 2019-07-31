@@ -66,10 +66,10 @@ optional arguments:
 ```
 barter_text.py "https://github.com/gglyptodon/barter"  /home/ggly/Desktop/barter_url.png  -W 30 -H 30 -F Ubuntu-R.ttf --fontsize 30  -f qrcode -S https://github.com/gglyptodon/barter -M0
 ```
-![qrcode with text](https://raw.githubusercontent.com/gglyptodon/barter/raw/master/example/pics/url.png)
+![](https://raw.githubusercontent.com/gglyptodon/barter/master/barter/example/pics/url.png)
 
 
 ```
 barter_text.py https://github.com/gglyptodon/barter  ~/Desktop/url_barcode.png  -W 30 -H 30 -F Ubuntu-R.ttf --fontsize 30  -f qrcode
 ```
-![qrcode](https://raw.githubusercontent.com/gglyptodon/barter/raw/master/example/pics/url_barcode.png)
+![](https://raw.githubusercontent.com/gglyptodon/barter/master/barter/example/pics/url_barcode.png)
