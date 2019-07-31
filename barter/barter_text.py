@@ -19,6 +19,8 @@ def main(args):
     include_text = args.include_text
     sidetext = args.side_text
     margin = args.side_text_margin
+    fontname = args.font
+    fontsize = args.fontsize
 
     if not outfile.split(".")[-1] in SUPPORTED_IMG_FORMATS:
         print("{} did not have a valid file extension, saving to {}".format(outfile, outfile+".png"))
@@ -33,7 +35,12 @@ def main(args):
         fpng = f.name+".png"
         write_label_tp(data=text, outfile=fpng, barcode_type=fmt, width_mm=width,
                        height_mm=height, include_text=include_text)
-        add_sidetext(img_to_add=fpng, outfile=outfile, sidetext=sidetext, margin=margin)
+        add_sidetext(img_to_add=fpng,
+                     outfile=outfile,
+                     sidetext=sidetext,
+                     margin=margin,
+                     fontname=fontname,
+                     fontsize=fontsize)
 
 
 if __name__ == "__main__":
@@ -50,4 +57,11 @@ if __name__ == "__main__":
     parser.add_argument("-M", "--side_text_margin", type=int,
                         help="spacing between barcode and text on the side (in px)",
                         default=5)
+    parser.add_argument("-F", "--font", type=str,
+                        help="font",
+                        default="FreeMono.otf")
+    parser.add_argument("--fontsize", type=int,
+                        help="font size",
+                        default=16)
+
     main(args=parser.parse_args())
